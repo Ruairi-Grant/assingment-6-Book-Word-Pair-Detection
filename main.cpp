@@ -104,7 +104,7 @@ void search_tree(node *tree, string word) {
     if (*tree == word) {
       string countOutput;
       if (tree->linked_list_size == 0){
-        cout << "Word pairs starting with \"" << *tree << "\"were not found." <<endl; 
+        cout << "Word pairs starting with \"" << *tree << "\" were not found." <<endl; 
       }
       if (tree->linked_list_size == 1){
         cout << "Word pairs starting with \"" << *tree << "\" were found once." <<endl; 
@@ -177,4 +177,3 @@ void print_tree(node *tree, node *word) {
     print_tree(tree->after, word);
   }
 }
-//"the Monophysite" was found once.
