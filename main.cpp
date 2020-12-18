@@ -9,6 +9,7 @@ using namespace std;
 void search_tree(node *tree, string word);
 bool process_word_tree(string new_word, node*& tree,node* &prev_word);
 void process_next_word_tree(string new_word, node*& head, node* &first_word);
+void print_tree(node *tree, node *word);
 
 int main() {
   node* root = nullptr; // start with an empty tree
@@ -39,7 +40,7 @@ int main() {
     string t_word;
     readInFile >> t_word; 
     if (previous_word != nullptr){
-      cout << *previous_word << "  ";
+      //cout << *previous_word << "  ";
       list_start = previous_word->next_word_root;
       process_next_word_tree(t_word, previous_word->next_word_root, previous_word);
     }
@@ -102,13 +103,10 @@ void search_tree(node *tree, string word) {
   if (tree != nullptr) {
     if (*tree == word) {
       string countOutput;
-      cout << "Word pairs starting with \"" << *tree << "\" were found " << tree->linked_list_size << " times." << "tree->next_word is: " << *(tree->next_word_root) <<endl; 
+      cout << "Word pairs starting with \"" << *tree << "\" were found " << tree->linked_list_size << " times." <<endl; 
       //cout words in the binary tree from left to right where the root is tree->next_word_root
-      /*node *current = tree->next_word;
-      while (current != nullptr){
-        cout <<"\"" << *tree  <<" " << current << "\" was found " << current->count << " times." <<endl;
-        current = current->next_word;
-      }*/
+      print_tree(tree->next_word_root, tree);
+      
     }
     if (*tree > word){
       search_tree(tree->before, word );
@@ -122,24 +120,6 @@ void search_tree(node *tree, string word) {
   
 }
 
-/*//make the list of words that followed every word.
-void process_next_word_list(string new_word, node*& head, node* &first_word){
-  if (head == nullptr){
-    head = new node();
-    head->assign(new_word);
-    
-    cout << *head << "is the value in head;" << first_word->next_word << " is the first word in the list" << endl;
-
-    first_word->linked_list_size ++;
-  } else {
-    if (new_word == *head ){
-      head->count++;
-      first_word->linked_list_size ++;
-    } else {
-      process_next_word_list(new_word, head->next_word , first_word);
-    }
-  }
-}*/
 
 
 // returns true if the word is new, false otherwise
@@ -170,3 +150,12 @@ void process_next_word_tree(string new_word, node*& tree,  node* &first_word) {
   
 	
 }
+
+void print_tree(node *tree, node *word) {
+  if (tree != nullptr) {
+    print_tree(tree->before, word);
+    cout << "\"" << *word << " " << *tree <<"\" " << tree->count << endl;
+    print_tree(tree->after, word);
+  }
+}
+//"the Monophysite" was found once.
