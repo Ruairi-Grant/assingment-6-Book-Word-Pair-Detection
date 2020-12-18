@@ -103,7 +103,18 @@ void search_tree(node *tree, string word) {
   if (tree != nullptr) {
     if (*tree == word) {
       string countOutput;
-      cout << "Word pairs starting with \"" << *tree << "\" were found " << tree->linked_list_size << " times." <<endl; 
+      if (tree->linked_list_size == 0){
+        cout << "Word pairs starting with \"" << *tree << "\"were not found." <<endl; 
+      }
+      if (tree->linked_list_size == 1){
+        cout << "Word pairs starting with \"" << *tree << "\" were found once." <<endl; 
+      }
+      if (tree->linked_list_size == 2){
+        cout << "Word pairs starting with \"" << *tree << "\" were found twice." <<endl; 
+      }
+      if (tree->linked_list_size > 2){
+        cout << "Word pairs starting with \"" << *tree << "\" were found " << tree->linked_list_size << " times." <<endl; 
+      }
       //cout words in the binary tree from left to right where the root is tree->next_word_root
       print_tree(tree->next_word_root, tree);
       
@@ -154,7 +165,15 @@ void process_next_word_tree(string new_word, node*& tree,  node* &first_word) {
 void print_tree(node *tree, node *word) {
   if (tree != nullptr) {
     print_tree(tree->before, word);
-    cout << "\"" << *word << " " << *tree <<"\" " << tree->count << endl;
+    if (tree->count == 1){
+      cout << "\"" << *word << " " << *tree <<"\" was found once."  << endl;
+    }
+    if (tree->count == 2){
+      cout << "\"" << *word << " " << *tree <<"\" was found twice." << endl;
+    }
+    if (tree->count > 2){
+      cout << "\"" << *word << " " << *tree <<"\" was found " << tree->count << " times." << endl;
+    }
     print_tree(tree->after, word);
   }
 }
