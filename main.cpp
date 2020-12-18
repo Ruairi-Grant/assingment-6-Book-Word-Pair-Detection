@@ -8,7 +8,7 @@ using namespace std;
 // forward declarations
 void search_tree(node *tree, string word);
 bool process_word_tree(string new_word, node*& tree,node* &prev_word);
-void process_next_word_list(string new_word, node*& tree, node* &first_word);
+void process_next_word_tree(string new_word, node*& head, node* &first_word);
 
 int main() {
   node* root = nullptr; // start with an empty tree
@@ -39,8 +39,9 @@ int main() {
     string t_word;
     readInFile >> t_word; 
     if (previous_word != nullptr){
-      list_start = previous_word->next_word;
-      process_next_word_list(t_word, list_start, previous_word);
+      cout << *previous_word << "  ";
+      list_start = previous_word->next_word_root;
+      process_next_word_tree(t_word, previous_word->next_word_root, previous_word);
     }
     if (cin.fail() == false) {
 			wordcount++;
@@ -101,8 +102,13 @@ void search_tree(node *tree, string word) {
   if (tree != nullptr) {
     if (*tree == word) {
       string countOutput;
-      cout << "Word pairs starting with \"" << word << "\" were found " << tree->linked_list_size << " times." <<endl; 
-      
+      cout << "Word pairs starting with \"" << *tree << "\" were found " << tree->linked_list_size << " times." << "tree->next_word is: " << *(tree->next_word_root) <<endl; 
+      //cout words in the binary tree from left to right where the root is tree->next_word_root
+      /*node *current = tree->next_word;
+      while (current != nullptr){
+        cout <<"\"" << *tree  <<" " << current << "\" was found " << current->count << " times." <<endl;
+        current = current->next_word;
+      }*/
     }
     if (*tree > word){
       search_tree(tree->before, word );
@@ -116,18 +122,51 @@ void search_tree(node *tree, string word) {
   
 }
 
-//make the list of words that followed every word.
-void process_next_word_list(string new_word, node*& tree, node* &first_word){
-  if (tree == nullptr){
-    tree = new node();
-    tree->assign(new_word);
+/*//make the list of words that followed every word.
+void process_next_word_list(string new_word, node*& head, node* &first_word){
+  if (head == nullptr){
+    head = new node();
+    head->assign(new_word);
+    
+    cout << *head << "is the value in head;" << first_word->next_word << " is the first word in the list" << endl;
+
     first_word->linked_list_size ++;
   } else {
-    if (new_word == *tree ){
-      tree->count++;
+    if (new_word == *head ){
+      head->count++;
       first_word->linked_list_size ++;
     } else {
-      process_next_word_list(new_word, tree-> next_word , first_word);
+      process_next_word_list(new_word, head->next_word , first_word);
     }
   }
+}*/
+
+
+// returns true if the word is new, false otherwise
+void process_next_word_tree(string new_word, node*& tree,  node* &first_word) {
+	//bool response;
+  // make the bianery tree
+	if (tree == nullptr) {
+		tree = new node();
+    tree->assign(new_word);
+    first_word->linked_list_size ++;
+    
+    
+		
+	} else {
+		if (new_word == *tree) {
+			tree->count++;
+      first_word->linked_list_size ++;
+      
+			
+		} else {
+			if (new_word < *tree) {
+				process_next_word_tree(new_word, tree->before, first_word);
+			} else {
+				process_next_word_tree(new_word, tree->after, first_word);
+			}
+		}
+	}
+  
+	
 }

@@ -13,5 +13,5 @@ class node : public std::string {
   // after this word in alphabetical order, duh.
   node *after;
   //"next_word" points to the list of words that come imidiatly after each occurace of the word
-  node *next_word;
+  node *next_word_root;
 };
